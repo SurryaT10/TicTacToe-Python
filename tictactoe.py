@@ -2,21 +2,21 @@ from tkinter import *
 
 import time
 
-win = Tk()                                                                      #Creates Game window
+win = Tk() #Creates Game window
 win.title("Tic-Tac-Toe")
 win.geometry("450x400")                                                         
-canvas = Canvas(win,height=300,width=300, bg="grey")                            #Canvas for creating shapes
+canvas = Canvas(win,height=300,width=300, bg="grey") #Canvas for creating shapes
 
 
 
-def equals(a, b, c):                                                            #Check for a win
+def equals(a, b, c): #Check for a win
         if a==b and b==c:
             return True                                                         
         return False
 
 class TicTacToe:
 
-    def __init__(self):                                                         #List to store the State of the Board
+    def __init__(self): #List to store the State of the Board
         self.board = [
                 ['0','1','2'],
                 ['3','4','5'],
@@ -26,21 +26,21 @@ class TicTacToe:
 
     def checkWinner(self):
         for i in range(3):
-            if equals(self.board[i][0], self.board[i][1], self.board[i][2]):        #Row Check
+            if equals(self.board[i][0], self.board[i][1], self.board[i][2]): #Row Check
                 return self.board[i][0]
 
         for i in range(3):
-            if equals(self.board[0][i], self.board[1][i], self.board[2][i]):        #Column Check
+            if equals(self.board[0][i], self.board[1][i], self.board[2][i]): #Column Check
                 return self.board[0][i]
 
         if equals(self.board[0][0], self.board[1][1], self.board[2][2]):
             return self.board[0][0]
-        elif equals(self.board[2][0], self.board[1][1], self.board[0][2]):           #Diagonal Check
+        elif equals(self.board[2][0], self.board[1][1], self.board[0][2]): #Diagonal Check
             return self.board[2][0]
         
         return ''
     
-    def draw_X(self, button):                                                       #Drawing 'X' using create_line()
+    def draw_X(self, button): #Drawing 'X' using create_line()
         if button == 5:
             l1 = canvas.create_line(0,0,100,100)
             l2 = canvas.create_line(100,0,0,100)
@@ -79,7 +79,7 @@ class TicTacToe:
             self.board[2][2] = 'X'
 
 
-    def draw_O(self, button):                                                           #Drawing 'O' using create_oval()
+    def draw_O(self, button): #Drawing 'O' using create_oval()
         if button == 5:
             l1 = canvas.create_oval(0,0,100,100)
             self.board[0][0] = 'O'
@@ -109,29 +109,29 @@ class TicTacToe:
             self.board[2][2] = 'O'
     
     
-    def Play(self, button):                                                         #switch X and O turns
+    def Play(self, button):
         if self.turns<9:
+            #switch X and O turns
             if self.turns%2 == 0:
+                x_turn = Label(win, text="Turn - O", font="sans-serif 20 bold", bg="yellow", width=13, height=3).place(x=120, y=320)
                 self.draw_X(button)
             else:
+                o_turn = Label(win, text="Turn - X", font="sans-serif 20 bold", bg="yellow", width=13, height=3).place(x=120, y=320)
                 self.draw_O(button)
             self.turns+=1
-        canvas.tag_unbind(button, "<Button-1>")                                     #Unbinding the button/cell which is Clicked already
+        canvas.tag_unbind(button, "<Button-1>") #Unbinding the button/cell which is Clicked already
         winner = self.checkWinner()
         
         if winner == 'X':
-            win_label_x = Label(win, text="Winner : X", font="sans-serif 20 bold", bg="yellow", width=13, height=3).place(x=120, y=320)
-            time.sleep(0.5)
+            win_label_x = Label(win, text="Winner : X", font="sans-serif 20 bold", bg="yellow", width=13, height=3).place(x=120, y=320)   
             game_done = True
                 
         elif winner == 'O':
             win_label_o = Label(win, text="Winner : O", font="sans-serif 20 bold", bg="green", width=13, height=3).place(x=120, y=320)
-            time.sleep(0.5)
             game_done = True
 
         elif winner == '' and self.turns>8:
             win_label_tie = Label(win, text="Its a TIE", font="sans-serif 20 bold", bg="brown", width=13, height=3).place(x=120, y=320)
-            time.sleep(0.5)
             game_done = True
 
         else:
@@ -139,21 +139,23 @@ class TicTacToe:
         
         if game_done:
             Game1 = TicTacToe()
-    def Board(self):                                                                #Board SetUp
+    def Board(self): #Board SetUp
+
+        # Grids
         l1 = canvas.create_line(0, 100, 300, 100)
         l2 = canvas.create_line(0, 200, 300, 200)
-                                                                                    #Grids
         l3 = canvas.create_line(100, 0, 100, 300)
         l3 = canvas.create_line(200, 0, 200, 300)
 
         canvas.pack()
 
+        #each button acts as a cell
         button1 = canvas.create_rectangle(0, 0, 100, 100, fill="grey40", outline="grey60")   
         button2 = canvas.create_rectangle(100, 0, 200, 100, fill="grey40", outline="grey60") 
         button3 = canvas.create_rectangle(200, 0, 300, 100, fill="grey40", outline="grey60")
         
         button4 = canvas.create_rectangle(0, 100, 100, 200, fill="grey40", outline="grey60")
-        button5 = canvas.create_rectangle(100, 100, 200, 200, fill="grey40", outline="grey60")              #each button acts as a cell
+        button5 = canvas.create_rectangle(100, 100, 200, 200, fill="grey40", outline="grey60")
         button6 = canvas.create_rectangle(200, 100, 300, 200, fill="grey40", outline="grey60")
         
         button7 = canvas.create_rectangle(0, 200, 100, 300, fill="grey40", outline="grey60")
@@ -170,7 +172,9 @@ class TicTacToe:
         canvas.tag_bind(button8, "<Button-1>", lambda state: self.Play(button8))
         canvas.tag_bind(button9, "<Button-1>", lambda state: self.Play(button9))
 
-Game = TicTacToe()                                                                                     #Class Object
-button_start = Button(win, text = "Play", command = Game.Board, width=13, height=3, bg="yellow").place(x=175, y=320)  #Onclick calls Board() of class
+        x_turn = Label(win, text="Turn - X", font="sans-serif 20 bold", bg="yellow", width=13, height=3).place(x=120, y=320)
+
+Game = TicTacToe()
+button_start = Button(win, text = "Play", command = Game.Board, width=13, height=3, bg="yellow").place(x=175, y=320)
 
 win.mainloop()
